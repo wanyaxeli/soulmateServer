@@ -9,5 +9,6 @@ urlpatterns = [
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('interests/',InterestsView.as_view(),name='interests'),
+    path('interests/<int:pk>',InterestsView.as_view(),name='interests'),
     path('users/<int:pk>',SpecificUserView.as_view(),name='user')
 ]

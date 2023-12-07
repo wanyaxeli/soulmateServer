@@ -41,7 +41,6 @@ class InterestsView(APIView):
     def post(self,request):
         data=request.data
         user=request.user
-        print(user)
         serializer=InterestsSerializer(data=data)
         if serializer.is_valid():
             serializer.save(user=user)
@@ -49,11 +48,15 @@ class InterestsView(APIView):
         else :
             return Response(serializer.errors)
         
-    def get(self,request):
-        user=request.user
-        interests=Interests.objects.all()
-        serializer=InterestsSerializer(interests,many=True)
-        return Response(serializer.data)
+    def get(self,request,*args,**kwargs):
+        pk=self.kwargs['pk']
+        try:
+            user=User.objects.get(pk=pk)
+            interests=Interests.objects.get(user=user)
+            serializer=InterestsSerializer(interests)
+            return Response(serializer.data)
+        except Interests.DoesNotExist:
+            return Response('user does not exit')
 
 class ProfileView(APIView):
     permission_classes=[permissions.IsAuthenticated]
