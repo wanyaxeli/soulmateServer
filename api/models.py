@@ -32,9 +32,9 @@ class Messages(models.Model):
     sender=models.ForeignKey(user,on_delete=models.CASCADE,related_name='sender')
     receipient=models.ForeignKey(user,on_delete=models.CASCADE,related_name='receipient')
     message=models.CharField(max_length=2000,default='',null=True)
-    read=models.BooleanField(default=False)
+    read=models.BooleanField(default=False,blank=True,null=True)
     def __str__(self) -> str:
-        return self.pk
+        return f'{self.sender} {self.message}'
 class Likes(models.Model):
     user=models.ForeignKey(user,on_delete=models.CASCADE,related_name='owner')
     myLikes=models.ManyToManyField(User)

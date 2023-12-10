@@ -13,7 +13,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 from django.urls import path
 from django.core.asgi import get_asgi_application
-
+from api.consumers import ChatConsumer
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'soulmateServer.settings')
 
 django_asgi_app = get_asgi_application()
@@ -22,11 +22,11 @@ application = ProtocolTypeRouter({
     "http": django_asgi_app,
 
     # WebSocket chat handler
-    # "websocket": AllowedHostsOriginValidator(
-    #     AuthMiddlewareStack(
-    #         URLRouter([
-    #             path(''),
-    #         ])
-    #     )
-    # ),
+    "websocket": AllowedHostsOriginValidator(
+        AuthMiddlewareStack(
+            URLRouter([
+                path('ws/chat/',ChatConsumer.as_asgi(),name='chat'),
+            ])
+        )
+    ),
 })
